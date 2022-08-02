@@ -2,8 +2,13 @@ const slides = document.querySelectorAll('.slide');
 
 for (const slide of slides) {
     slide.addEventListener('click', ()=>{
-        clearActiveClasses();
-        slide.classList.add('active');
+        if(slide.classList.contains('active')){
+            clearActiveClasses();
+        }
+        else{
+            clearActiveClasses();
+            slide.classList.add('active');
+        }
     })
 }
 
