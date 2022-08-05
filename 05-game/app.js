@@ -3,7 +3,8 @@ const screens = document.querySelectorAll('.screen')
 const timeList = document.querySelector('#time-list')
 const timeEL = document.querySelector('#time')
 let time = 0;
-let score = 0
+let score = 0;
+let fail = 0;
 const board = document.querySelector('#board')
 
 startBtn.addEventListener('click', (event) => {
@@ -20,11 +21,14 @@ timeList.addEventListener('click', event => {
     }
 })
 
-board.addEventListener('click',event=>{
-    if (event.target.classList.contains('circle')){
+board.addEventListener('click', event => {
+    if (event.target.classList.contains('circle')) {
         score++;
         event.target.remove()
         createRandomCircle()
+    }
+    else{
+        fail++;
     }
 })
 
@@ -39,8 +43,6 @@ function decreaseTime() {
         finishGame()
     } else {
         let current = --time
-
-            //current = `${current}`
         if (current < 10) {
             current = `0${current}`
         }
@@ -49,17 +51,20 @@ function decreaseTime() {
 }
 
 function setTime(value) {
-    if(value==60){
+    if (value == 60) {
         timeEL.innerHTML = '01:00'
     }
-    else{
+    else {
         timeEL.innerHTML = `00:${value}`
     }
 }
 
 function finishGame() {
     timeEL.parentNode.classList.add('hide')
-    board.innerHTML=`<h1>Ваш счет: <span class='primary'>${score}</span></h1>` 
+    board.innerHTML = `<h3>Ваш счет: <span class='primary'>${score} </span></h3>`
+    //board.innerHTML=+'<br>'
+    //board.innerHTML +=`<h3> Ваши промахи: <span class='primary'>${fail} </span></h3>`
+     
 }
 
 function createRandomCircle() {
@@ -70,6 +75,8 @@ function createRandomCircle() {
     const y = getRamdomNumber(0, height - size,);
 
     circle.classList.add('circle')
+    circle.style.backgroundColor=`rgb( ${randomColor()} , ${randomColor()} , ${randomColor()} )`;
+    circle.style.boxShadow = `0 0 2px rgb( ${randomColor()} , ${randomColor()} , ${randomColor()} ), 0 0 10px rgb( ${randomColor()} , ${randomColor()} , ${randomColor()} )`
     circle.style.width = `${size}px`
     circle.style.height = `${size}px`
     circle.style.top = `${x}px`
@@ -77,6 +84,10 @@ function createRandomCircle() {
 
     board.append(circle)
 }
+
+function randomColor(){
+    return Math.floor(Math.random()*255)
+ }
 
 function getRamdomNumber(min, max) {
     return Math.round(Math.random() * (max - min) + min)
